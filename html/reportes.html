@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes Financieros - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="reportes-container">
+        <header class="reportes-header">
+            <h1>Reportes Financieros</h1>
+            <button onclick="location.href='menu.html'" class="back-button">Volver al Menú</button>
+        </header>
+        <main class="reportes-main">
+            <section class="filtro-reporte">
+                <h2>Seleccionar Reporte</h2>
+                <form id="reporteForm">
+                    <div class="form-group">
+                        <label for="periodo">Selecciona el Periodo</label>
+                        <select id="periodo" required>
+                            <option value="dia">Hoy</option>
+                            <option value="mes">Esta Semana</option>
+                            <option value="mes">Este Mes</option>
+                            <option value="año">Este Año</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">Generar Reporte</button>
+                </form>
+            </section>
+            <section class="reporte-financiero">
+                <h2>Reporte Financiero</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Entradas de Dinero</th>
+                            <th>Salidas de Dinero</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reporteTable">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+<script src="/funcionalidad.js"></script>
+</body>
+</html>

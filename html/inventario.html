@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="inventario-container">
+        <header class="inventario-header">
+            <h1>Gestión de Inventario</h1>
+            <button onclick="location.href='menu.html'" class="back-button">Volver al Menú</button>
+        </header>
+
+        <main class="inventario-main">
+            <section class="add-product">
+                <h2>Añadir o Editar Producto</h2>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto</label>
+                        <input type="text" id="productName" placeholder="Ingrese el nombre del producto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Precio</label>
+                        <input type="number" id="productPrice" placeholder="Ingrese el precio del producto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Cantidad</label>
+                        <input type="number" id="productQuantity" placeholder="Ingrese la cantidad" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Añadir Producto</button>
+                </form>
+            </section>
+            <section class="product-list">
+                <h2>Lista de Productos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTable">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="/funcionalidad.js"></script>
+</body>
+</html>

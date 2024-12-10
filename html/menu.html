@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Bienvenido a BuzzCut BarberShop</h1>
+        </header>
+        <main class="dashboard-main">
+            <div class="icon-grid">
+                <div class="icon-card" id="gestion-usuarios">
+                    <img src="/images/agregar-usuario.png" alt="Gestión de Usuarios" onclick="location.href='usuarios.html'">
+                    <p>Gestión de Usuarios</p>
+                </div>
+                <div class="icon-card" id="gestion-inventario">
+                    <img src="/images/lista-de-verificacion.png" alt="Gestión de Inventario" onclick="location.href='inventario.html'">
+                    <p>Gestión de Inventario</p>
+                </div>
+                <div class="icon-card" id="registro-ventas">
+                    <img src="/images/anadir-al-carrito.png" alt="Registro de Ventas" onclick="location.href='ventas.html'">
+                    <p>Registro de Ventas</p>
+                </div>
+                <div class="icon-card" id="reportes-financieros">
+                    <img src="/images/grafico-de-barras.png" alt="Reportes Financieros" onclick="location.href='reportes.html'">
+                    <p>Reportes Financieros</p>
+                </div>
+                <div class="icon-card" id="ingreso-compras">
+                    <img src="/images/prestamo.png" alt="Ingreso de Compras" onclick="location.href='compras.html'">
+                    <p>Ingreso de Compras</p>
+                </div>
+                <div class="icon-card">
+                    <img src="/images/salida.png" alt="Ayuda" class="logout-button" onclick="logout()" title="Cerrar Sesión">
+                    <p>Salir</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function logout() {
+            alert("Sesión cerrada");
+            localStorage.removeItem('role'); 
+            window.location.href = "/index.html"; 
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const role = localStorage.getItem('role');
+            if (!role) {
+                alert("No tienes acceso. Inicia sesión.");
+                window.location.href = "/index.html"; 
+            }
+            if (role === "empleado") {
+                document.getElementById("gestion-usuarios").style.display = "none"; 
+                document.getElementById("reportes-financieros").style.display = "none"; 
+                document.getElementById("gestion-inventario").style.display = "none"; 
+            }
+        });
+    </script>
+</body>
+</html>

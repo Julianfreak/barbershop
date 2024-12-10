@@ -1,0 +1,788 @@
+/* Estilo base */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    background-color: #d2d7d8; 
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sección izquierda (logo) */
+.left-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('images/buzzcut.png') no-repeat center center;
+    background-size: cover;
+}
+.left-section .logo {
+    max-width: 70%;
+    max-height: 70%;
+}
+
+/* Sección derecha (formulario) */
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); 
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.right-section h1 {
+    margin-bottom: 50px;
+    font-size: 44px;
+}
+
+/* Formulario */
+.login-form .form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 300px;
+    text-align: left;
+}
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 24px;
+}
+.login-form input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 15px;
+}
+.btn-submit {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* Pie de página */
+.login-footer {
+    margin-top: 15px;
+    font-size: 18px;
+}
+.login-footer a {
+    color: #0000ff;
+    text-decoration: none;
+}
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para el dashboard */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: url('images/fondo1.jpeg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.dashboard-header {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.dashboard-header h1 {
+    display: flex;
+    text-align: center;
+    margin: 0;
+    font-size: 44px;
+}
+
+.logout-button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #ff1a1a;
+}
+
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.icon-card {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+.icon-card img {
+    width: 60px;
+    height: 60px;
+}
+
+.icon-card p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.icon-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos específicos para la página de usuarios */
+.usuarios-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.usuarios-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+}
+
+.usuarios-header h1 {
+    margin: 0;
+}
+
+.back-button {
+    background-color: #ff4d4d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.usuarios-main {
+    padding: 20px;
+}
+
+/* Formulario para añadir usuarios */
+.add-user {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-user h2 {
+    margin-bottom: 15px;
+}
+
+.add-user .form-group {
+    margin-bottom: 15px;
+}
+
+.add-user input, .add-user select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Tabla de usuarios */
+.user-list {
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-list th, .user-list td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.user-list th {
+    background-color: #f4f4f4;
+}
+
+.user-list td .btn {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: #fff;
+}
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/* Estilos generales para la página de gestión de inventario */
+.inventario-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.inventario-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inventario-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.back-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Formulario de añadir o editar producto */
+.add-product {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.add-product h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.add-product .form-group {
+    margin-bottom: 15px;
+}
+
+.add-product label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.add-product input, .add-product select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.add-product button {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-product button:hover {
+    background-color: #45a049;
+}
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo de la tabla */
+.product-list {
+    margin-top: 20px;
+}
+
+.product-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.product-list th, .product-list td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.product-list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.product-list td button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product-list td .btn-edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.product-list td .btn-edit:hover {
+    background-color: #45a049;
+}
+
+.product-list td .btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.product-list td .btn-delete:hover {
+    background-color: #e04e4e;
+}
+
+/* Estilos generales para la página de gestión de ventas */
+.ventas-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.ventas-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ventas-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.back-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Formulario para registrar venta */
+.registro-venta {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.registro-venta h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.registro-venta .form-group {
+    margin-bottom: 15px;
+}
+
+.registro-venta label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.registro-venta input, .registro-venta select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.registro-venta button {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.registro-venta button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo de la tabla */
+.ventas-lista {
+    margin-top: 20px;
+}
+
+.ventas-lista table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.ventas-lista th, .ventas-lista td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.ventas-lista th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.ventas-lista td button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ventas-lista td .btn-edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.ventas-lista td .btn-edit:hover {
+    background-color: #45a049;
+}
+
+.ventas-lista td .btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.ventas-lista td .btn-delete:hover {
+    background-color: #e04e4e;
+}
+#total {
+    font-weight: bold;
+    background-color: #f4f4f4;
+    border: 2px solid #ddd;
+    color: #000;
+}
+#productos {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px; 
+    margin-top: 10px;
+}
+#productos label {
+    display: flex;
+    align-items: center; 
+    font-size: 16px; 
+    background-color: #f9f9f9; 
+    padding: 8px 12px; 
+    border-radius: 5px;
+    border: 1px solid #ddd; 
+    cursor: pointer; 
+    transition: all 0.2s ease-in-out; 
+}
+#productos label:hover {
+    background-color: #f0f0f0; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+#productos input[type="checkbox"] {
+    margin-right: 10px; 
+    width: 18px; 
+    height: 18px; 
+    accent-color: #000000; 
+}
+
+/* Estilos generales para la página de Reportes Financieros */
+.reportes-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.reportes-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reportes-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.back-button {
+    background-color: #e04e4e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/* Filtro para seleccionar el reporte */
+.filtro-reporte {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.filtro-reporte h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.filtro-reporte .form-group {
+    margin-bottom: 15px;
+}
+
+.filtro-reporte label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.filtro-reporte select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.filtro-reporte button {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filtro-reporte button:hover {
+    background-color: #4CAF50;
+}
+
+/* Estilo de la tabla de reportes */
+.reporte-financiero {
+    margin-top: 20px;
+}
+
+.reporte-financiero table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.reporte-financiero th, .reporte-financiero td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.reporte-financiero th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.reporte-financiero td {
+    background-color: #ffffff;
+}
+
+.reporte-financiero td:hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilos generales para la página de Registro de Compras */
+.compras-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.compras-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.compras-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.back-button {
+    background-color: #e04e4e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Formulario para registrar compra */
+.registro-compra {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.registro-compra h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.registro-compra .form-group {
+    margin-bottom: 15px;
+}
+
+.registro-compra label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.registro-compra select, .registro-compra input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.registro-compra button {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.registro-compra button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo de la tabla de compras */
+.compras-lista {
+    margin-top: 20px;
+}
+
+.compras-lista table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.compras-lista th, .compras-lista td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.compras-lista th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.compras-lista td {
+    background-color: #ffffff;
+}
+
+.compras-lista td:hover {
+    background-color: #f9f9f9;
+}
+

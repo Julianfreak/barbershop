@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Compras - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="compras-container">
+        <header class="compras-header">
+            <h1>Registro de Compras</h1>
+            <button onclick="location.href='menu.html'" class="back-button">Volver al Menú</button>
+        </header>
+
+        <main class="compras-main">
+            <section class="registro-compra">
+                <h2>Registrar Compra o Gasto</h2>
+                <form id="compraForm">
+                    <div class="form-group">
+                        <label for="tipoCompra">Tipo de Compra o Gasto</label>
+                        <select id="tipoCompra" required>
+                            <option value="producto">Compra de Producto</option>
+                            <option value="servicios_publicos">Pago de Servicios Públicos</option>
+                            <option value="arrendamiento">Pago de Arrendamiento</option>
+                            <option value="anticipos">Pago o Anticipos de Salario</option>
+                            <option value="pago_proveedor">Pago a Proveedores</option>
+                            <option value="otros">Otros Gastos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" id="descripcion" placeholder="Ingrese la descripción del gasto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto</label>
+                        <input type="number" id="monto" placeholder="Ingrese el monto de la compra o gasto" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Registrar Compra</button>
+                </form>
+            </section>
+
+            <section class="compras-lista">
+                <h2>Lista de Compras Registradas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Compra</th>
+                            <th>Descripción</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comprasTable">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="/funcionalidad.js"></script>
+</body>
+</html>

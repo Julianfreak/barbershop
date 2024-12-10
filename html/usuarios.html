@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="usuarios-container">
+        <header class="usuarios-header">
+            <h1>Gestión de Usuarios</h1>
+            <button onclick="location.href='menu.html'" class="back-button">Volver al Menú</button>
+        </header>
+        <main class="usuarios-main">
+            <section class="add-user">
+                <h2>Añadir ó editar usuarios</h2>
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="username">Nombre de Usuario</label>
+                        <input type="text" id="username" placeholder="Ingrese el nombre de usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Telefono</label>
+                        <input type="number" id="phone" placeholder="Ingrese el numero telefonico" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Correo</label>
+                        <input type="email" id="email" placeholder="Ingrese el correo electronico" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Rol</label>
+                        <select id="role" required>
+                            <option value="admin">Administrador</option>
+                            <option value="empleado">Empleado</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">Añadir Usuario</button>
+                </form>
+            </section>
+            <section class="user-list">
+                <h2>Lista de Usuarios</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre de Usuario</th>
+                            <th>Rol</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="/funcionalidad.js"></script>
+</body>
+</html>

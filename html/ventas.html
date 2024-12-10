@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Ventas - BuzzCut BarberShop</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="ventas-container">
+        <header class="ventas-header">
+            <h1>Registro de Ventas</h1>
+            <button onclick="location.href='menu.html'" class="back-button">Volver al Menú</button>
+        </header>
+
+        <main class="ventas-main">
+            <section class="registro-venta">
+                <h2>Registrar Venta</h2>
+                <form id="ventaForm">
+                    <div class="form-group">
+                        <label for="usuario">Empleado</label>
+                        <input type="text" id="usuario" placeholder="Ingrese el nombre del empleado" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicio">Servicio (Corte de Cabello)</label>
+                        <select id="servicio" required>
+                            <option value="corte_basico">Corte Básico</option>
+                            <option value="corte_avanzado">Corte Avanzado</option>
+                            <option value="corte_barba">Corte y Barba</option>
+                            <option value="barba">Barba</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productos">Productos</label>
+                        <div id="productos">
+                            <label>
+                                <input type="checkbox" value="shampoo"> Shampoo
+                            </label>
+                            <label>
+                                <input type="checkbox" value="cera"> Cera
+                            </label>
+                            <label>
+                                <input type="checkbox" value="gel"> Gel
+                            </label>
+                            <label>
+                                <input type="checkbox" value="maquina"> Máquina de Corte
+                            </label>
+                            <label>
+                                <input type="checkbox" value="tratamiento"> Tratamiento Capilar
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="total">Total de la Venta</label>
+                        <input type="number" id="total" placeholder="Total" readonly>
+                    </div>
+                    <button type="submit" class="btn-submit">Registrar Venta</button>
+                </form>
+            </section>
+            <section class="ventas-lista">
+                <h2>Ventas Registradas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Servicio</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ventasTable">
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="/funcionalidad.js"></script>
+</body>
+</html>
