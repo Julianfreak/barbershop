@@ -1,0 +1,12 @@
+# Ignorar dumps y backups de base de datos
+*.sql
+dump-*.sql
+
+# Ignorar archivos de credenciales (si existieran aquí)
+.env
+conexion.php
+
+# Ignorar temporales y logs
+*.log
+*.tmp
+

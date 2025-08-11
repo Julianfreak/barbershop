@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: buzzcut_web
+    ports:
+      - "8888:80"
+    volumes:
+      - ./barbershop:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - buzzcut-net
+
+  mysql:
+    image: mysql:5.7
+    container_name: buzzcut_mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: buzzcut
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - buzzcut-net
+
+volumes:
+  db_data:
+
+networks:
+  buzzcut-net:
