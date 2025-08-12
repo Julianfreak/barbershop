@@ -15,7 +15,7 @@ function col_exists($conn, $db, $table, $col) {
 $hasPhone = col_exists($conn, $dbName, 'USUARIO', 'telefono');
 $hasEmail = col_exists($conn, $dbName, 'USUARIO', 'correo');
 
-$selectCols = "u.id, u.nombre_usuario, r.nombre AS rol";
+$selectCols = "u.id, u.nombre, u.nombre_usuario, r.nombre AS rol";
 if ($hasPhone) $selectCols .= ", u.telefono";
 if ($hasEmail) $selectCols .= ", u.correo";
 
