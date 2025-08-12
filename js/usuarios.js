@@ -7,28 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Elementos:", { userForm, userTable });
 
-  // Si no existe el form, salimos y mostramos error
-  if (!userForm) {
-    console.error("No se encontró el formulario #userForm. Revisa el HTML.");
-    return;
-  }
-
   // fallback: detectar el botón submit dentro del form y vigilar clicks
   const submitBtn =
     userForm.querySelector('button[type="submit"]') ||
     userForm.querySelector("button.btn-submit");
   console.log("submitBtn:", submitBtn);
-
-  if (submitBtn) {
-    submitBtn.addEventListener("click", (ev) => {
-      console.log("submit button clicked (evento click)", ev);
-      // no hacemos preventDefault aquí; solo debug
-    });
-  } else {
-    console.warn(
-      "No se encontró botón type='submit' dentro del formulario (comprobar HTML)."
-    );
-  }
 
   // attach del evento submit
   userForm.addEventListener("submit", async (e) => {
@@ -44,15 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const password1 = document.getElementById("password1")?.value || "";
     const password = document.getElementById("confirmPassword")?.value || "";
 
-    console.log("Valores del formulario:", {
-      user,
-      username,
-      phone,
-      email,
-      role,
-      passwordPresent: !!password1,
-      confirmPresent: !!password,
-    });
 
     // validaciones
     if (!user || !username || !email || !role || !password1 || !password) {
@@ -100,62 +74,98 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ========== cargarUsuarios ==========
-  async function cargarUsuarios() {
+async function cargarUsuarios() {
+  try {
+    console.log("Solicitando lista a backend/obtener_usuarios.php");
+    const res = await fetch("../backend/obtener_usuarios.php");
+    console.log("Status:", res.status);
+
+    const text = await res.text();
+    let data;
     try {
-      console.log("Solicitando lista a backend/obtener_usuarios.php");
-      const res = await fetch("../backend/obtener_usuarios.php");
-      console.log("Status:", res.status);
-      const text = await res.text();
-      // intentar parsear JSON
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        console.error(
-          "Respuesta de obtener_usuarios.php no es JSON válido:",
-          text
-        );
-        alert(
-          "No se pudo cargar la lista de usuarios (respuesta inválida del servidor)."
-        );
-        return;
-      }
-
-      // Estructura esperada: { success: true, usuarios: [...] }
-      const usuarios =
-        data && data.success && Array.isArray(data.usuarios)
-          ? data.usuarios
-          : [];
-      console.log("Usuarios recibidos:", usuarios);
-
-      userTable.innerHTML = "";
-      usuarios.forEach((user) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${escapeHtml(user.nombre_usuario || "")}</td>
-          <td>${escapeHtml(user.rol || "")}</td>
-          <td>${escapeHtml(user.telefono || "")}</td>
-          <td>${escapeHtml(user.correo || "")}</td>
-          <td>
-            <button class="edit-btn" data-id="${user.id}">Editar</button>
-            <button class="delete-btn" data-id="${user.id}">Eliminar</button>
-          </td>
-        `;
-        userTable.appendChild(row);
-      });
-    } catch (err) {
-      console.error("Error al obtener usuarios:", err);
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error(
+        "Respuesta de obtener_usuarios.php no es JSON válido:",
+        text
+      );
+      alert(
+        "No se pudo cargar la lista de usuarios (respuesta inválida del servidor)."
+      );
+      return;
     }
-  }
 
-  // pequeño helper
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
+    const usuarios =
+    data && data.success && Array.isArray(data.usuarios) ? data.usuarios : [];
+    console.log("Usuarios recibidos:", usuarios);
 
-  // inicial
-  cargarUsuarios();
+    userTable.innerHTML = "";
+
+    usuarios.forEach((user) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${escapeHtml(user.nombre_usuario || "")}</td>
+        <td>${escapeHtml(user.rol || "")}</td>
+        <td>${escapeHtml(user.telefono || "")}</td>
+        <td>${escapeHtml(user.correo || "")}</td>
+        <td>
+          <button class="edit-btn" data-id="${user.id}">Editar</button>
+          <button class="delete-btn" data-id="${user.id}">Eliminar</button>
+        </td>
+      `;
+      userTable.appendChild(row);
+    });
+
+    // Asignar eventos después de renderizar
+    asignarEventosEliminar();
+  } catch (err) {
+    console.error("Error al obtener usuarios:", err);
+  }
+}
+
+function asignarEventosEliminar() {
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const userId = btn.getAttribute("data-id");
+
+      if (confirm("¿Seguro que deseas eliminar este usuario?")) {
+        try {
+          const res = await fetch("../backend/eliminar_usuarios.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `id=${encodeURIComponent(userId)}`,
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            alert("Usuario eliminado correctamente.");
+            setTimeout(() => {
+            cargarUsuarios();
+            }, 0);
+          } else {
+            alert(
+              "Error al eliminar usuario: " + (data.message || "Desconocido")
+            );
+          }
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
+          alert("No se pudo conectar con el servidor.");
+        }
+      }
+    });
+  });
+}
+
+// Helper
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Inicial
+cargarUsuarios();
+
 });
