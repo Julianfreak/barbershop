@@ -37,28 +37,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === validación en tiempo real de contraseñas ===
-  function checkPasswords() {
-    // si no hay inputs, salir
-    if (!pwd1 || !pwd2 || !submitBtn) return;
 
-    // En modo edición: si ambos vacíos -> permitir (no se actualiza contraseña)
-    if (editingId && pwd1.value === "" && pwd2.value === "") {
-      pwd2.setCustomValidity("");
-      submitBtn.disabled = false;
-      return;
-    }
+ const passwordInput = document.getElementById("password1");
+ const confirmPasswordInput = document.getElementById("confirmPassword");
 
-    if (pwd1.value !== pwd2.value) {
-      pwd2.setCustomValidity("Las contraseñas no coinciden");
-      submitBtn.disabled = true;
-    } else {
-      pwd2.setCustomValidity("");
-      submitBtn.disabled = false;
-    }
+ // Crear un mensaje de error (oculto por defecto)
+ let passwordError = document.createElement("div");
+ passwordError.id = "passwordError";
+ passwordError.style.color = "red";
+ passwordError.style.fontSize = "0.9em";
+ passwordError.style.display = "none";
+ confirmPasswordInput.insertAdjacentElement("afterend", passwordError); 
+
+function checkPasswords() {
+  const pass = passwordInput.value.trim();
+  const confirmPass = confirmPasswordInput.value.trim();
+
+  if (pass !== confirmPass) {
+    passwordError.textContent = " Las contraseñas no coinciden.";
+    passwordError.style.display = "block";
+    return false;
   }
 
-  if (pwd1) pwd1.addEventListener("input", checkPasswords);
-  if (pwd2) pwd2.addEventListener("input", checkPasswords);
+  passwordError.style.display = "none";
+  return true;
+}
+
+// Prevenir envío si las contraseñas no coinciden
+userForm.addEventListener("submit", function (event) {
+  if (!checkPasswords()) {
+    event.preventDefault(); // Evita el envío del formulario
+  }
+});
 
   // === enviar formulario (crear / actualizar) ===
   userForm.addEventListener("submit", async (e) => {
@@ -87,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // comprobación extra (debería ya manejarlo checkPasswords)
     if (password1 !== password) {
-      alert("Las contraseñas no coinciden.");
       return;
     }
 
@@ -106,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // decidir endpoint
-    const url = editingId ? "../backend/actualizar_usuarios.php" : "../backend/crear_usuarios.php";
+    const url = editingId ? "../backend/actualizar_usuarios.php" : "../backend/crear_usuario.php";
     if (editingId) payload.id = editingId;
 
     try {
@@ -260,7 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelBtn.type = "button";
       cancelBtn.id = "cancelEditBtn";
       cancelBtn.textContent = "Cancelar";
-      cancelBtn.style.marginLeft = "8px";
+      cancelBtn.style.marginLeft = "18px";
+      cancelBtn.classList.add("back-button");
       submitBtn.insertAdjacentElement("afterend", cancelBtn);
       cancelBtn.addEventListener("click", () => {
         editingId = null;
