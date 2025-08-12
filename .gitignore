@@ -9,4 +9,4 @@ conexion.php
 # Ignorar temporales y logs
 *.log
 *.tmp
-
+.vscode/
