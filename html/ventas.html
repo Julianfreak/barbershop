@@ -18,12 +18,13 @@
                 <h2>Registrar Venta</h2>
                 <form id="ventaForm">
                     <div class="form-group">
-                        <label for="usuario">Empleado</label>
-                        <input type="text" id="usuario" placeholder="Ingrese el nombre del empleado" required>
+                        <label for="usuario">Usuario</label>
+                        <input type="text" id="usuario" readonly>
                     </div>
                     <div class="form-group">
                         <label for="servicio">Servicio (Corte de Cabello)</label>
-                        <select id="servicio" required>
+                        <select id="servicio">
+                            <option value="" selected>-Seleccione una opción-</option>
                             <option value="corte_basico">Corte Básico</option>
                             <option value="corte_avanzado">Corte Avanzado</option>
                             <option value="corte_barba">Corte y Barba</option>
@@ -74,6 +75,7 @@
             </section>
         </main>
     </div>
-    <script src="../login.js"></script>
+<script src="../js/autenticacion.js"></script>
+<script src="../js/ventas.js"></script>
 </body>
 </html>

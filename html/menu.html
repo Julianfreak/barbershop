@@ -47,18 +47,14 @@
             localStorage.removeItem('role'); 
             window.location.href = "../index.html"; 
         }
-        document.addEventListener("DOMContentLoaded", function () {
-            const role = localStorage.getItem('role');
-            if (!role) {
-                alert("No tienes acceso. Inicia sesión.");
-                window.location.href = "../index.html"; 
-            }
-            if (role === "empleado") {
-                document.getElementById("gestion-usuarios").style.display = "none"; 
-                document.getElementById("reportes-financieros").style.display = "none"; 
-                document.getElementById("gestion-inventario").style.display = "none"; 
-            }
-        });
+        document.addEventListener("DOMContentLoaded", () => {
+                const rolUsuario = sessionStorage.getItem("rolUsuario");
+                if (rolUsuario == "2") { // Empleado
+                    document.getElementById("gestion-usuarios").style.display = "none";
+                    document.getElementById("gestion-inventario").style.display = "none";
+                    document.getElementById("reportes-financieros").style.display = "none";
+                }
+            });
     </script>
 </body>
 </html>
