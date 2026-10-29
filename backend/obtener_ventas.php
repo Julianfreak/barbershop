@@ -1,35 +1,24 @@
 <?php
-header('Content-Type: application/json');
-require_once 'conexion.php';
+session_start();
+header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/conexion.php';
 
-$dbName = $conn->real_escape_string($conn->query("SELECT DATABASE()")->fetch_row()[0]);
-function col_exists($conn, $db, $table, $col) {
-    $q = $conn->prepare("SELECT COUNT(*) FROM information_schema.columns 
-                         WHERE table_schema = ? AND table_name = ? AND column_name = ? LIMIT 1");
-    $q->bind_param("sss", $db, $table, $col);
-    $q->execute();
-    $r = $q->get_result()->fetch_row()[0];
-    $q->close();
-    return ($r > 0);
+if (empty($_SESSION['usuario']['id'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Debes iniciar sesión para consultar las ventas.']);
+    exit;
 }
 
-$hasFecha = col_exists($conn, $dbName, 'VENTA', 'fecha');
-$hasCreatedAt = col_exists($conn, $dbName, 'VENTA', 'created_at');
-
-$dateCol = $hasFecha ? 'v.fecha' : ($hasCreatedAt ? 'v.created_at' : 'NULL');
-
-$sql = "SELECT v.id, u.nombre_usuario AS empleado, v.servicio, v.productos, v.total, $dateCol AS fecha
+$sql = 'SELECT v.id, u.nombre_usuario AS empleado, v.servicio, v.productos, v.total, v.fecha
         FROM VENTA v
-        JOIN USUARIO u ON v.usuario_id = u.id
-        ORDER BY v.id DESC";
+        INNER JOIN USUARIO u ON v.usuario_id = u.id
+        ORDER BY v.id DESC';
 
-$res = $conn->query($sql);
+$resultado = $conn->query($sql);
 $ventas = [];
-if ($res && $res->num_rows > 0) {
-    while ($row = $res->fetch_assoc()) {
-        $ventas[] = $row;
-    }
+while ($fila = $resultado->fetch_assoc()) {
+    $ventas[] = $fila;
 }
 
-echo json_encode(['success' => true, 'ventas' => $ventas]);
+echo json_encode(['success' => true, 'ventas' => $ventas], JSON_UNESCAPED_UNICODE);
 $conn->close();

@@ -1,13 +1,14 @@
-version: '3.8'
 
 services:
   web:
     build: .
     container_name: buzzcut_web
     ports:
-      - "8888:80"
+      - "${APP_PORT:-8888}:80"
     volumes:
       - ./:/var/www/html
+    env_file:
+      - .env
     depends_on:
       - mysql
     networks:
@@ -17,12 +18,13 @@ services:
     image: mysql:5.7
     container_name: buzzcut_mysql
     ports:
-      - "3307:3306"
+      - "${DB_EXTERNAL_PORT:-3307}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: buzzcut
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD en .env}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-buzzcut}
     volumes:
       - db_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     networks:
       - buzzcut-net
 
