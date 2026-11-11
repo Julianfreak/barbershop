@@ -175,5 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Calcular total inicial
   calcularTotal();
-  // cargarVentas(); // opcional
+  // Cargar ventas al abrir la página
+  cargarVentas();
 });

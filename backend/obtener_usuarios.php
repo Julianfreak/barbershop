@@ -1,38 +1,25 @@
 <?php
-header('Content-Type: application/json');
-require_once 'conexion.php';
+header('Content-Type: application/json; charset=utf-8');
 
-// detectar columnas opcionales
-$dbName = $conn->real_escape_string($conn->query("SELECT DATABASE()")->fetch_row()[0]);
-function col_exists($conn, $db, $table, $col) {
-    $q = $conn->prepare("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ? LIMIT 1");
-    $q->bind_param("sss", $db, $table, $col);
-    $q->execute();
-    $res = $q->get_result()->fetch_row()[0];
-    $q->close();
-    return ($res > 0);
-}
-$hasPhone = col_exists($conn, $dbName, 'USUARIO', 'telefono');
-$hasEmail = col_exists($conn, $dbName, 'USUARIO', 'correo');
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/conexion.php';
 
-$selectCols = "u.id, u.nombre, u.nombre_usuario, r.nombre AS rol";
-if ($hasPhone) $selectCols .= ", u.telefono";
-if ($hasEmail) $selectCols .= ", u.correo";
+// Solo administradores pueden ver la lista de usuarios
+requerir_admin();
 
-$sql = "SELECT $selectCols FROM USUARIO u JOIN ROL r ON u.rol_id = r.id";
+$sql = 'SELECT u.id, u.nombre, u.nombre_usuario, r.nombre AS rol, u.telefono, u.correo
+        FROM USUARIO u
+        JOIN ROL r ON u.rol_id = r.id
+        ORDER BY u.id ASC';
+
 $res = $conn->query($sql);
 
 $usuarios = [];
-if ($res && $res->num_rows > 0) {
+if ($res) {
     while ($row = $res->fetch_assoc()) {
-        // si no existen columnas, añadir claves vacías para evitar errores en el front
-        if (!$hasPhone) $row['telefono'] = '';
-        if (!$hasEmail) $row['correo'] = '';
         $usuarios[] = $row;
     }
 }
 
-echo json_encode(['success' => true, 'usuarios' => $usuarios]);
-
+echo json_encode(['success' => true, 'usuarios' => $usuarios], JSON_UNESCAPED_UNICODE);
 $conn->close();
-?>

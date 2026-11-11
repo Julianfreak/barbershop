@@ -1,0 +1,29 @@
+# ──────────────────────────────────────────────
+# .htaccess — Protección de archivos sensibles
+# Evita que Apache sirva .env, .git/, *.sql, conexion.php
+# ──────────────────────────────────────────────
+
+# Denegar acceso a archivos ocultos (.env, .git, .htaccess, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Denegar acceso a archivos de base de datos
+<FilesMatch "\.(sql)$">
+    Require all denied
+</FilesMatch>
+
+# Denegar acceso al archivo de conexión con credenciales
+<Files "conexion.php">
+    Require all denied
+</Files>
+
+# Desactivar listado de directorios
+Options -Indexes
+
+# Cabeceras de seguridad básicas
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

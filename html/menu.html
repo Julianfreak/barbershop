@@ -43,9 +43,13 @@
 
     <script>
         function logout() {
-            alert("Sesión cerrada");
-            localStorage.removeItem('role'); 
-            window.location.href = "../index.html"; 
+            // Cerrar sesión en el servidor
+            fetch('../backend/login.php', { method: 'POST', credentials: 'include' })
+                .catch(() => {});
+            // Limpiar datos de sesión del navegador
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = "../index.html";
         }
         document.addEventListener("DOMContentLoaded", () => {
                 const rolUsuario = sessionStorage.getItem("rolUsuario");

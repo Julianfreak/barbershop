@@ -16,6 +16,7 @@ Aplicación web de gestión para una barbería, desarrollada con HTML, CSS, Java
 ```text
 barbershop/
 ├── backend/
+│   ├── auth.php                   # Helper de autenticación y autorización
 │   ├── conexion.php              # Configuración local, no versionar
 │   ├── conexion.example.php      # Ejemplo de configuración
 │   ├── crear_usuario.php
@@ -24,13 +25,15 @@ barbershop/
 │   ├── obtener_usuarios.php
 │   ├── login.php
 │   ├── crear_venta.php
-│   └── obtener_ventas.php
+│   ├── obtener_ventas.php
+│   └── test_conexion.php          # Verificación de conexión (requiere sesión)
 ├── database/
 │   └── schema.sql                # Esquema y datos de catálogo iniciales
 ├── html/
 ├── images/
 ├── js/
 ├── .env.example
+├── .htaccess                      # Protege archivos sensibles (.env, .git, .sql)
 ├── Dockerfile
 ├── docker-compose.yml
 ├── index.html
@@ -111,15 +114,17 @@ Los precios de servicios se definen actualmente en `backend/crear_venta.php`. Lo
 
 ## Endpoints PHP identificados
 
-| Endpoint | Propósito |
-|---|---|
-| `backend/login.php` | Validar credenciales e iniciar sesión PHP |
-| `backend/crear_usuario.php` | Crear usuarios |
-| `backend/obtener_usuarios.php` | Consultar usuarios |
-| `backend/actualizar_usuarios.php` | Actualizar usuarios |
-| `backend/eliminar_usuarios.php` | Eliminar usuarios |
-| `backend/crear_venta.php` | Registrar una venta y sus productos en una transacción |
-| `backend/obtener_ventas.php` | Consultar ventas |
+| Endpoint | Propósito | Autenticación |
+|---|---|---|
+| `backend/login.php` | Validar credenciales e iniciar sesión PHP | Pública |
+| `backend/auth.php` | Helper de autenticación (incluido por otros endpoints) | — |
+| `backend/crear_usuario.php` | Crear usuarios | Solo admin |
+| `backend/obtener_usuarios.php` | Consultar usuarios | Solo admin |
+| `backend/actualizar_usuarios.php` | Actualizar usuarios | Solo admin |
+| `backend/eliminar_usuarios.php` | Eliminar usuarios | Solo admin |
+| `backend/crear_venta.php` | Registrar una venta y sus productos en una transacción | Sesión requerida |
+| `backend/obtener_ventas.php` | Consultar ventas | Sesión requerida |
+| `backend/test_conexion.php` | Verificar conexión a MySQL | Sesión requerida |
 
 ## Pruebas manuales recomendadas
 
@@ -135,10 +140,54 @@ Los precios de servicios se definen actualmente en `backend/crear_venta.php`. Lo
 
 - Las credenciales de desarrollo incluidas en `.env.example` son de ejemplo; no son apropiadas para producción.
 - No publiques `.env`, `backend/conexion.php`, respaldos ni datos reales de clientes.
-- El frontend no es una frontera de seguridad: los endpoints que cambian datos deben validar la sesión y los permisos en el servidor.
-- El módulo de usuarios debe proteger las operaciones de administración con autorización del lado del servidor.
+- El frontend no es una frontera de seguridad: los endpoints que cambian datos validan la sesión y los permisos en el servidor mediante `backend/auth.php`.
+- Los endpoints de gestión de usuarios requieren rol admin (`requerir_admin()`); las ventas y consulta de ventas requieren sesión activa (`requerir_sesion()`).
+- El login solo acepta contraseñas hasheadas con `password_hash()` y regenera el ID de sesión en cada inicio.
+- El archivo `.htaccess` protege `.env`, `.git/` y archivos `.sql` de ser servidos por Apache.
+- `display_errors` está desactivado en producción para no filtrar errores PHP al cliente.
 - Los módulos de inventario, compras y reportes necesitan implementación e integración del backend, además de pruebas.
 - MySQL 5.7 es una versión antigua; evalúa actualizar a una versión soportada después de verificar compatibilidad.
+
+## Correcciones aplicadas
+
+### Seguridad
+
+- **login.php**: Eliminado el fallback de contraseñas en texto plano (`|| $password === $hashAlmacenado`). Ahora solo se aceptan hashes de `password_hash()`.
+- **login.php**: Añadido `session_regenerate_id(true)` para prevenir fijación de sesión.
+- **login.php**: Eliminada la enumeración de usuarios (mensaje genérico "Usuario o contraseña incorrectos").
+- **login.php**: Desactivado `display_errors` para no filtrar errores PHP al cliente.
+- **login.php**: Eliminado el código muerto comentado (implementación anterior).
+- **auth.php**: Nuevo helper de autenticación compartido. `requerir_sesion()` verifica sesión activa; `requerir_admin()` verifica rol admin.
+- **crear_usuario.php, obtener_usuarios.php, actualizar_usuarios.php, eliminar_usuarios.php**: Añadida verificación de sesión y rol admin. Antes cualquiera podía crear/listar/editar/eliminar usuarios sin autenticarse.
+- **eliminar_usuarios.php**: Impedida la autoeliminación. Corregido el formato de respuesta inconsistente (ahora usa `success` en todos los casos).
+- **crear_usuario.php, actualizar_usuarios.php**: Añadida validación de longitud mínima de contraseña (6 caracteres) y formato de correo.
+- **test_conexion.php**: Añadida verificación de sesión. Antes exponía el estado de la conexión a cualquier visitante.
+- **.htaccess**: Nuevo archivo que bloquea el acceso HTTP a `.env`, `.git/`, archivos `.sql` y `conexion.php`.
+- **Dockerfile**: Desactivado `display_errors` en PHP. Habilitado `mod_rewrite` y `mod_headers` para soporte de `.htaccess`.
+
+### Bugs
+
+- **crear_venta.php**: Añadida verificación de stock disponible y decremento del inventario dentro de la transacción al vender productos.
+- **js/ventas.js**: Descomentada la llamada a `cargarVentas()` para que la tabla de ventas cargue al abrir la página.
+- **html/inventario.html, compras.html, reportes.html**: Corregida la ruta del script de `../login.js` (inexistente) a `../js/autenticacion.js`.
+- **html/reportes.html**: Corregido el valor duplicado `value="mes"` en las opciones de periodo ("Esta Semana" ahora usa `value="semana"`).
+- **html/menu.html**: Corregido el logout que limpiaba `localStorage['role']` (clave incorrecta). Ahora limpia `sessionStorage` y `localStorage` completamente.
+
+### Infraestructura
+
+- **.gitignore**: Corregida la regla `*.sql` que excluía `database/schema.sql` del control de versiones. Ahora solo se ignoran dumps (`dump-*.sql`, `backup-*.sql`).
+- **.gitignore**: Especificada la ruta completa `backend/conexion.php` en lugar de `conexion.php` para mayor claridad.
+- **docker-compose.yml**: Añadido healthcheck para MySQL con `condition: service_healthy` en `depends_on` para evitar race conditions en el arranque.
+- **Dockerfile**: Añadido `EXPOSE 80` y healthcheck.
+- **.env.example**: Creado (el README lo referenciaba pero no existía).
+- **backend/conexion.example.php**: Creado (el README lo referenciaba pero no existía).
+- **database/schema.sql**: Ahora versionado en git (antes estaba excluido por `*.sql`).
+
+### Backend
+
+- **crear_usuario.php, obtener_usuarios.php**: Eliminada la introspección innecesaria `column_exists()` (el esquema siempre tiene las columnas `telefono` y `correo`).
+- **crear_usuario.php, actualizar_usuarios.php**: Añadido manejo de error de duplicado (errno 1062) con mensaje claro.
+- **obtener_usuarios.php**: Añadido `ORDER BY u.id ASC` para orden consistente.
 
 ## Objetivo del proyecto
 

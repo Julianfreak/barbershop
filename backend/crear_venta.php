@@ -63,6 +63,14 @@ try {
                 $conn->rollback();
                 responder(400, ['success' => false, 'message' => 'Uno o más productos no existen o están inactivos.']);
             }
+
+            // Verificar que haya stock disponible
+            if ((int)$producto['stock'] <= 0) {
+                $stmtProducto->close();
+                $conn->rollback();
+                responder(400, ['success' => false, 'message' => 'Sin stock disponible para: ' . $producto['nombre']]);
+            }
+
             $productosGuardados[] = $producto;
             $total += (float)$producto['precio'];
         }
@@ -85,13 +93,21 @@ try {
         $stmtRelacion = $conn->prepare(
             'INSERT INTO VENTA_PRODUCTO (venta_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, 1, ?)'
         );
+        $stmtStock = $conn->prepare(
+            'UPDATE PRODUCTO SET stock = stock - 1 WHERE id = ? AND stock > 0'
+        );
         foreach ($productosGuardados as $producto) {
             $productoId = (int)$producto['id'];
             $precio = (float)$producto['precio'];
             $stmtRelacion->bind_param('iid', $ventaId, $productoId, $precio);
             $stmtRelacion->execute();
+
+            // Decrementar el stock del producto vendido
+            $stmtStock->bind_param('i', $productoId);
+            $stmtStock->execute();
         }
         $stmtRelacion->close();
+        $stmtStock->close();
     }
 
     $conn->commit();

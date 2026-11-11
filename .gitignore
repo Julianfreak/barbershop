@@ -1,10 +1,10 @@
-# Ignorar dumps y backups de base de datos
-*.sql
+# Ignorar dumps y backups de base de datos (no el schema)
 dump-*.sql
+backup-*.sql
 
-# Ignorar archivos de credenciales (si existieran aquí)
+# Ignorar archivos de credenciales
 .env
-conexion.php
+backend/conexion.php
 
 # Ignorar temporales y logs
 *.log
