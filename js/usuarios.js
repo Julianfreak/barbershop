@@ -123,6 +123,7 @@ userForm.addEventListener("submit", function (event) {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -160,7 +161,9 @@ userForm.addEventListener("submit", function (event) {
   async function cargarUsuarios() {
     try {
       console.log("Solicitando lista a backend/obtener_usuarios.php");
-      const res = await fetch("../backend/obtener_usuarios.php");
+      const res = await fetch("../backend/obtener_usuarios.php", {
+        credentials: "include",
+      });
       const text = await res.text();
       let data;
       try {
@@ -213,6 +216,7 @@ userForm.addEventListener("submit", function (event) {
           const res = await fetch("../backend/eliminar_usuarios.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            credentials: "include",
             body: `id=${encodeURIComponent(userId)}`,
           });
           const data = await res.json();

@@ -44,7 +44,7 @@
     <script>
         function logout() {
             // Cerrar sesión en el servidor
-            fetch('../backend/login.php', { method: 'POST', credentials: 'include' })
+            fetch('../backend/logout.php', { method: 'POST', credentials: 'include' })
                 .catch(() => {});
             // Limpiar datos de sesión del navegador
             sessionStorage.clear();

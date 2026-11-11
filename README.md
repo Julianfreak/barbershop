@@ -117,6 +117,7 @@ Los precios de servicios se definen actualmente en `backend/crear_venta.php`. Lo
 | Endpoint | Propósito | Autenticación |
 |---|---|---|
 | `backend/login.php` | Validar credenciales e iniciar sesión PHP | Pública |
+| `backend/logout.php` | Cerrar sesión y destruir la sesión PHP | Sesión requerida |
 | `backend/auth.php` | Helper de autenticación (incluido por otros endpoints) | — |
 | `backend/crear_usuario.php` | Crear usuarios | Solo admin |
 | `backend/obtener_usuarios.php` | Consultar usuarios | Solo admin |
@@ -188,6 +189,22 @@ Los precios de servicios se definen actualmente en `backend/crear_venta.php`. Lo
 - **crear_usuario.php, obtener_usuarios.php**: Eliminada la introspección innecesaria `column_exists()` (el esquema siempre tiene las columnas `telefono` y `correo`).
 - **crear_usuario.php, actualizar_usuarios.php**: Añadido manejo de error de duplicado (errno 1062) con mensaje claro.
 - **obtener_usuarios.php**: Añadido `ORDER BY u.id ASC` para orden consistente.
+- **logout.php** (nuevo): Endpoint que destruye la sesión PHP y borra la cookie de sesión.
+- **js/login.js**: Añadido `credentials: 'include'` al fetch de login. Eliminado el código muerto comentado.
+- **js/usuarios.js**: Añadido `credentials: 'include'` a las 3 peticiones fetch (crear, editar, eliminar). Sin esto, la cookie de sesión PHP no viajaba al backend y todas las operaciones devolvían 401.
+- **html/menu.html**: El logout ahora llama a `backend/logout.php` (antes llamaba a `login.php` que no maneja logout).
+
+### Modelo de autorización
+
+El sistema implementa control de acceso basado en roles (RBAC) en el servidor:
+
+1. **Autenticación**: El usuario inicia sesión en `login.php`. El servidor valida la contraseña con `password_verify()` y crea una sesión PHP almacenando `id`, `nombre_usuario` y `rol_id`.
+2. **Autorización**: Cada endpoint incluye `auth.php` y llama a:
+   - `requerir_sesion()`: cualquier usuario autenticado (ventas, consulta de ventas, test de conexión).
+   - `requerir_admin()`: solo rol admin (crear, editar, eliminar, listar usuarios).
+3. **Transporte de sesión**: El navegador envía la cookie `PHPSESSID` con cada petición. El flag `credentials: 'include'` en fetch garantiza que la cookie llegue al backend.
+4. **Asignación de roles**: Solo un admin autenticado puede crear usuarios y asignar roles. Un usuario nuevo recibe el rol que el admin le asigne y no puede cambiarlo por sí mismo.
+5. **UI como conveniencia**: El frontend oculta opciones según el rol (`menu.html`), pero la seguridad real la impone el backend. Manipular el frontend no permite acceso no autorizado.
 
 ## Objetivo del proyecto
 
